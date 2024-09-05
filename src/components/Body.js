@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { WithDiscountRestaurantCard } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 
@@ -31,87 +31,94 @@ const Body = () => {
     fetchData();
     setSearchText("");
   };
-
+  const NewWithDiscountRestaurantCard =
+    WithDiscountRestaurantCard(RestaurantCard);
   return (
-    <div className="body" style={{ padding: "0px 20px" }}>
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          alignItems: "center",
-        }}
-      >
+    <>
+      <div className="body" style={{ padding: "0px 20px" }}>
         <div
-          className="search"
           style={{
             display: "flex",
-            gap: "10px",
+            gap: "20px",
             alignItems: "center",
           }}
         >
-          <div>
-            <input
-              type="text"
-              style={{
-                border: "1px solid black",
-                height: "20px",
-                borderRadius: "5px",
-              }}
-              value={searchText}
-              onChange={(e) => {
-                setSearchText(e.target.value);
-              }}
-            />
-          </div>
-          <button
-            className="search-btn"
-            onClick={() => {
-              const filteredList = listOfRestaurants.filter((res) =>
-                res.info.name.toLowerCase().includes(searchText.toLowerCase())
-              );
-              setFilteredRestaurant(filteredList);
+          <div
+            className="search"
+            style={{
+              display: "flex",
+              gap: "10px",
+              alignItems: "center",
             }}
           >
-            Search
-          </button>
-        </div>
-        <div className="filter">
-          <button
-            className="filter-btn"
-            onClick={() => {
-              const filteredList = listOfRestaurants.filter(
-                (res) => res.info.avgRating > 4.3
-              );
-              setFilteredRestaurant(filteredList);
-              setSearchText("");
-            }}
-          >
-            Top Rated Restaurants
-          </button>
-        </div>
-        <div style={{ cursor: "pointer" }} onClick={handleRefresh}>
-          <i className="fa fa-refresh" aria-hidden="true"></i>
-        </div>
-      </div>
-      {isRefreshing ? (
-        <Shimmer />
-      ) : (
-        <div
-          className="res-container"
-          style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}
-        >
-          {filteredRestaurant.map((restaurant) => (
-            <Link
-              style={{ textDecoration: "none", color: "black" }}
-              key={restaurant.info.id}
-              to={"/restaurants/" + restaurant.info.id}
+            <div>
+              <input
+                type="text"
+                style={{
+                  border: "1px solid black",
+                  height: "20px",
+                  borderRadius: "5px",
+                }}
+                value={searchText}
+                onChange={(e) => {
+                  setSearchText(e.target.value);
+                }}
+              />
+            </div>
+            <button
+              className="search-btn"
+              onClick={() => {
+                const filteredList = listOfRestaurants.filter((res) =>
+                  res.info.name.toLowerCase().includes(searchText.toLowerCase())
+                );
+                setFilteredRestaurant(filteredList);
+              }}
             >
-              <RestaurantCard resData={restaurant} />
-            </Link>
-          ))}
+              Search
+            </button>
+          </div>
+          <div className="filter">
+            <button
+              className="filter-btn"
+              onClick={() => {
+                const filteredList = listOfRestaurants.filter(
+                  (res) => res.info.avgRating > 4.3
+                );
+                setFilteredRestaurant(filteredList);
+                setSearchText("");
+              }}
+            >
+              Top Rated Restaurants
+            </button>
+          </div>
+          <div style={{ cursor: "pointer" }} onClick={handleRefresh}>
+            <i className="fa fa-refresh" aria-hidden="true"></i>
+          </div>
         </div>
-      )}
-    </div>
+        {isRefreshing ? (
+          <Shimmer />
+        ) : (
+          <div
+            className="res-container"
+            style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}
+          >
+            {filteredRestaurant.map((restaurant) => (
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                key={restaurant.info.id}
+                to={"/restaurants/" + restaurant.info.id}
+              >
+                {restaurant?.info?.aggregatedDiscountInfoV3?.header ? (
+                  <NewWithDiscountRestaurantCard resData={restaurant} />
+                ) : (
+                  <RestaurantCard resData={restaurant} />
+                )}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

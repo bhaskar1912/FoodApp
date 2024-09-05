@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { MENU_API } from "../utils/constants";
+import { CDN_URL, MENU_API } from "../utils/constants";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 
 const RestaurantMenu = () => {
@@ -39,10 +39,10 @@ const RestaurantMenu = () => {
         </span>
         <div
           style={{
-            boxShadow: "0 0 5px black",
             height: "100px",
             width: "60%",
             borderRadius: "15px",
+            boxShadow: "0px 5px 8px 4px #ddd7d7",
           }}
         >
           <div style={{ padding: "10px" }}>
@@ -62,23 +62,94 @@ const RestaurantMenu = () => {
         </div>
       </div>
       <div>
-        {title}
-        <ul>
-          {itemCards?.map((item) =>
-            item.card?.info ? (
-              <>
-                <div key={item.card.info.id}>
-                  <li>{item.card.info.name}</li>
-                  <span>
+        <p style={{ textAlign: "center", fontWeight: "700" }}>
+          {title} ({itemCards.length})
+        </p>
+        {itemCards?.map((item) =>
+          item.card?.info ? (
+            <>
+              <div
+                key={item.card.info.id}
+                style={{
+                  marginBottom: "30px",
+                  height: "150px",
+                  width: "56%",
+                  borderRadius: "10px",
+                  padding: "10px 20px",
+                  boxShadow: "0 10px 10px rgba(0, 0, 0, 0.1)",
+                  margin: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "20px",
+                }}
+              >
+                <div>
+                  <div>
+                    {item.card.info.itemAttribute.vegClassifier === "VEG" ? (
+                      <i
+                        style={{ color: "green" }}
+                        class="fa-regular fa-circle-dot"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ color: "red" }}
+                        class="fa-regular fa-circle-dot"
+                      ></i>
+                    )}
+                  </div>
+                  <li style={{ listStyle: "none", fontWeight: "600" }}>
+                    {item.card.info.name}
+                  </li>
+                  <span style={{ lineHeight: "25px" }}>
                     {"₹"}
                     {item.card.info.price / 100}
                   </span>
-                  <div>{item.card.info.description} </div>
+                  <div
+                    style={{
+                      maxWidth: "500px",
+                      overflow: "hidden",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {item.card.info.description}
+                  </div>
                 </div>
-              </>
-            ) : null
-          )}
-        </ul>
+                <div style={{ position: "relative" }}>
+                  <img
+                    style={{
+                      width: "118px",
+                      height: "100px",
+                      borderRadius: "10px",
+                    }}
+                    src={CDN_URL + item.card.info.imageId}
+                    alt="menuImage"
+                  />
+                  <button
+                    style={{
+                      width: "55px",
+                      height: "25px",
+                      position: "absolute",
+                      borderRadius: "5px",
+                      border: "1px solid #ede7e7",
+                      color: "green",
+                      fontWeight: 600,
+                      backgroundColor: "white",
+                      cursor: "pointer",
+                      bottom: "-6px",
+                      left: "35px",
+                    }}
+                  >
+                    ADD
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : null
+        )}
       </div>
     </>
   );

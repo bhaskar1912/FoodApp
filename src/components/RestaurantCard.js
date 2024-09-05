@@ -1,6 +1,35 @@
 import React from "react";
 import { CDN_URL } from "../utils/constants";
 
+export const WithDiscountRestaurantCard = (RestaurantCard) => {
+  return (props) => {
+    const { header, subHeader } =
+      props.resData.info?.aggregatedDiscountInfoV3 || {};
+
+    return (
+      <div style={{ position: "relative" }}>
+        {header && subHeader && (
+          <div
+            style={{
+              position: "absolute",
+              top: "182px",
+              left: "10px",
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              color: "white",
+              padding: "5px",
+              borderRadius: "5px",
+              zIndex: 10,
+            }}
+          >
+            {header} - {subHeader}
+          </div>
+        )}
+        <RestaurantCard {...props} />
+      </div>
+    );
+  };
+};
+
 const RestaurantCard = (props) => {
   const { resData } = props;
   const { cloudinaryImageId, name, avgRating, costForTwo, cuisines } =
