@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { CDN_URL, MENU_API } from "../utils/constants";
+import { CDN_URL } from "../utils/constants";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
-
+  const dispatch = useDispatch();
   const resInfo = useRestaurantMenu(resId);
+
+  const handleAddItem = () => {
+    dispatch(addItem("pizza"));
+  };
 
   if (!resInfo) {
     return <Shimmer />;
@@ -86,7 +92,7 @@ const RestaurantMenu = () => {
               >
                 <div>
                   <div>
-                    {item.card.info.itemAttribute.vegClassifier === "VEG" ? (
+                    {item.card?.info?.itemAttribute?.vegClassifier === "VEG" ? (
                       <i
                         style={{ color: "green" }}
                         class="fa-regular fa-circle-dot"
@@ -103,8 +109,19 @@ const RestaurantMenu = () => {
                   </li>
                   <span style={{ lineHeight: "25px" }}>
                     {"₹"}
-                    {item.card.info.price / 100}
+                    {item?.card?.info?.price
+                      ? item.card.info.price / 100
+                      : item?.card?.info?.defaultPrice
+                      ? item.card.info.defaultPrice / 100
+                      : ""}
                   </span>
+
+                  <div>
+                    <span style={{ color: "green" }}>
+                      <i className="fa-solid fa-star"></i>
+                    </span>
+                    {item?.card?.info?.ratings?.aggregatedRating?.rating}
+                  </div>
                   <div
                     style={{
                       maxWidth: "500px",
@@ -142,6 +159,7 @@ const RestaurantMenu = () => {
                       bottom: "-6px",
                       left: "35px",
                     }}
+                    onClick={handleAddItem}
                   >
                     ADD
                   </button>

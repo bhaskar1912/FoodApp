@@ -2,11 +2,13 @@ import { useState } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [btnName, setbtnName] = useState("Login");
   const onlineStatus = useOnlineStatus();
 
+  const cartItems = useSelector((store) => store.cart.items);
   return (
     <>
       <div className="header">
@@ -31,7 +33,7 @@ const Header = () => {
             )}
           </div>
         </div>
-        <div className="nav-items">
+        <div className="nav-items" style={{ position: "relative" }}>
           <ul>
             <li>
               <Link to="/">Home</Link>{" "}
@@ -43,7 +45,27 @@ const Header = () => {
               <Link to="/grocery">Grocery</Link>
             </li>
             <li>Contact Us</li>
-            <li>Cart</li>
+            <li style={{ marginRight: "10px" }}>
+              <Link to="/cart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                {cartItems.length >= 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-5px",
+                      right: "52px",
+                      background: "gray",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "5px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {cartItems?.length}
+                  </span>
+                )}
+              </Link>
+            </li>
             <button
               style={{
                 background: "gray",
