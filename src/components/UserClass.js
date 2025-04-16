@@ -14,11 +14,11 @@ export default class UserClass extends Component {
   }
 
   async componentDidMount() {
-    // const data = await fetch("https://api.github.com/users/akshaymarch7");
-    // const json = await data.json();
-    // this.setState({
-    //   userInfo: json,
-    // });
+    const data = await fetch("https://api.github.com/users/hiteshchoudhary");
+    const json = await data.json();
+    this.setState({
+      userInfo: json,
+    });
     // this.timer = setInterval(() => {
     //   console.log("valar morghulis");
     // }, 1000);

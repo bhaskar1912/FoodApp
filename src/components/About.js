@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UserClass from "./UserClass";
+import Dummyclass from "./Dummyclass";
 
 class About extends Component {
   constructor(props) {
@@ -11,14 +12,17 @@ class About extends Component {
   }
   render() {
     return (
-      <div>
-        About Class
-        <UserClass
-          component={"class component"}
-          name={"Ravi"}
-          contact={"1234567890"}
-        />
-      </div>
+      <>
+        <Dummyclass nameData={"kya chal rha hai"} />
+        <div>
+          About Class
+          <UserClass
+            component={"class component"}
+            name={"Ravi"}
+            contact={"1234567890"}
+          />
+        </div>
+      </>
     );
   }
 }

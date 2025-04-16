@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CDN_URL } from "../utils/constants";
+import UserContextData from "../utils/UserContextData";
 
 export const WithDiscountRestaurantCard = (RestaurantCard) => {
   return (props) => {
@@ -31,6 +32,7 @@ export const WithDiscountRestaurantCard = (RestaurantCard) => {
 };
 
 const RestaurantCard = (props) => {
+  const contextName = useContext(UserContextData);
   const { resData } = props;
   const { cloudinaryImageId, name, avgRating, costForTwo, cuisines } =
     resData?.info;
@@ -55,6 +57,7 @@ const RestaurantCard = (props) => {
         <h4>{avgRating}</h4>
         <h4>{costForTwo}</h4>
         <h4>{cuisines.join(", ")}</h4>
+        <h4>{contextName.name}</h4>
       </div>
     </>
   );

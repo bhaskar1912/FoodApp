@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import RestaurantCard, { WithDiscountRestaurantCard } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import UserContextData from "../utils/UserContextData";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchText, setSearchText] = useState("");
+
+  const { name, setLoginName } = useContext(UserContextData);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -33,6 +38,7 @@ const Body = () => {
   };
   const NewWithDiscountRestaurantCard =
     WithDiscountRestaurantCard(RestaurantCard);
+
   return (
     <>
       <div className="body" style={{ padding: "0px 20px" }}>
@@ -93,6 +99,13 @@ const Body = () => {
           </div>
           <div style={{ cursor: "pointer" }} onClick={handleRefresh}>
             <i className="fa fa-refresh" aria-hidden="true"></i>
+          </div>
+          <div>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setLoginName(e.target.value)}
+            />
           </div>
         </div>
         {isRefreshing ? (
